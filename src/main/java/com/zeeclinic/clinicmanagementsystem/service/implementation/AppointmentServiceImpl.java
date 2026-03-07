@@ -5,8 +5,10 @@ import com.zeeclinic.clinicmanagementsystem.mapper.AppointmentMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.AppointmentRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.AppointmentResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Appointment;
+import com.zeeclinic.clinicmanagementsystem.model.entity.Doctor;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 import com.zeeclinic.clinicmanagementsystem.repository.AppointmentRepository;
+import com.zeeclinic.clinicmanagementsystem.repository.DoctorRepository;
 import com.zeeclinic.clinicmanagementsystem.service.AppointmentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private  final AppointmentMapper appointmentMapper;
+    private final DoctorRepository doctorRepository;
 
     @Override
     public List<AppointmentResponse> findByPatientId(UUID id) {
@@ -36,13 +39,42 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public AppointmentResponse setStatus(UUID id, Status status) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Appointment not found"));
+        Status currentStatus = appointment.getStatus();
+
+        if (currentStatus == Status.DONE) {
+            throw new ConflictException("Can't change status of done appointment");
+        }
+
+        if (status == Status.CANCELLED){
+            if (!currentStatus.equals(Status.PENDING) && !currentStatus.equals(Status.CONFIRMED)){
+                throw  new ConflictException("Appointment can only be cancelled from PENDING or CONFIRMED");
+            }
+            appointment.setStatus(status);
+            return appointmentMapper.toResponse(appointmentRepository.save(appointment));
+        }
+        if (currentStatus.ordinal() +1 != status.ordinal()){
+            throw new ConflictException("Invalid status transition: " + currentStatus + " to " + status);
+        }
+
         appointment.setStatus(status);
         return appointmentMapper.toResponse(appointmentRepository.save(appointment));
     }
 
     @Override
+    public void delete(UUID id) {
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Appointment not found"));
+
+        if (!appointment.getStatus().equals(Status.CANCELLED)) {
+            throw  new ConflictException("Appointment can only be deleted if cancelled");
+        }
+        appointmentRepository.delete(appointment);
+    }
+
+    @Override
     public AppointmentResponse create(AppointmentRequest requestPayload) {
         UUID doctorId = requestPayload.getDoctorId();
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()->new EntityNotFoundException("Doctor not found"));
+        if (!doctor.getIsActive()) throw  new ConflictException("Appointment can only be made to an active doctor");
         LocalDateTime requestDateTime = requestPayload.getAppointmentDateTime();
         boolean conflict = appointmentRepository.existsByDoctorIdAndAppointmentDateTime(doctorId, requestDateTime);
         if (conflict) {
@@ -66,12 +98,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public AppointmentResponse update(UUID id, AppointmentRequest request) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Appointment not found"));
+        if (appointment.getStatus().equals(Status.DONE)) {
+            throw new ConflictException("Can't update done appointment");
+        }
         UUID doctorId = appointment.getDoctor().getId();
         LocalDateTime requestDateTime = request.getAppointmentDateTime();
         boolean conflict = appointmentRepository.existsByDoctorIdAndAppointmentDateTimeAndIdNot(doctorId, requestDateTime, id);
         if (conflict) {
             throw new ConflictException("Doctor already has an appointment at this time");
         }
+
         appointment.setAppointmentDateTime(request.getAppointmentDateTime());
         appointment.setNotes(request.getNotes());
         return appointmentMapper.toResponse(appointmentRepository.save(appointment));

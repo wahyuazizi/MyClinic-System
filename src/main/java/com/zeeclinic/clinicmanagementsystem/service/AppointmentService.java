@@ -12,4 +12,5 @@ public interface AppointmentService extends CrudService<AppointmentRequest, Appo
     List<AppointmentResponse> findByPatientId(UUID id);
     List<AppointmentResponse> findByDoctorId(UUID id);
     AppointmentResponse setStatus(UUID id, Status status);
+    void delete(UUID id);
 }
