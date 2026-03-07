@@ -5,7 +5,6 @@ import com.zeeclinic.clinicmanagementsystem.model.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,26 +16,31 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Patient extends Base {
+public class Patient extends BaseEntity {
 
     @Id
-    @GeneratedValue
-    @UuidGenerator
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
     @NotBlank
     @Size(max = 100)
     private String fullName;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
+    @NotBlank
     @Size(min = 16, max = 16)
     private String nik;
 
+    @Column(nullable = false)
     @NotNull
     @Past
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(nullable = false)
     @NotBlank
     @Size(max = 15)
     private String phoneNumber;
@@ -47,5 +51,6 @@ public class Patient extends Base {
     @Size(max = 255)
     private String address;
 
+    @Enumerated(EnumType.STRING)
     private BloodType bloodType;
 }

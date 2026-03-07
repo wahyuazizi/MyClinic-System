@@ -3,7 +3,6 @@ package com.zeeclinic.clinicmanagementsystem.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -15,17 +14,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MedicalRecord {
+public class MedicalRecord extends BaseEntity {
     @Id
-    @GeneratedValue
-    @UuidGenerator
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotNull
     @OneToOne
-    @JoinColumn(name = "appointment_id")
+    @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 
+    @Column(nullable = false)
     @NotBlank
     @Size(max = 500)
     private String diagnosis;
@@ -36,17 +35,17 @@ public class MedicalRecord {
     @Size(max = 1000)
     private String treatment;
 
-    @Min(1)
-    @Max(500)
+    @DecimalMin(value = "1.0")
+    @DecimalMax(value = "500.0")
     private Double weight;
 
-    @Min(30)
-    @Max(300)
+    @DecimalMin(value = "30.0")
+    @DecimalMax(value = "300.0")
     private Double height;
 
     @Size(max = 20)
     private String bloodPressure;
 
-    private LocalDate nextVisiteDate;
+    private LocalDate nextVisitDate;
 
 }

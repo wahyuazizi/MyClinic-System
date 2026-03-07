@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -18,32 +17,38 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Doctor {
+public class Doctor extends BaseEntity {
 
     @Id
-    @GeneratedValue
-    @UuidGenerator
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
     @NotBlank
     @Size(max = 100)
     private String fullName;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     @NotBlank
+    @Size(max = 50)
     private String licenseNumber;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Specialization specialization;
 
+    @Column(nullable = false)
     @NotBlank
     @Size(max = 15)
     private String phoneNumber;
 
     @Column(unique = true)
     @Email
+    @Size(max = 100)
     private String email;
 
-    @Column(columnDefinition = "boolean default true")
+    @Column(columnDefinition = "boolean default true", nullable = false)
+    @NotNull
     private Boolean isActive;
 }
