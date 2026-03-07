@@ -33,7 +33,9 @@ public class MedicalRecordRequest {
     @DecimalMin(value = "30.0", message = "height must be greater than or equal to 30.0")
     @DecimalMax(value = "300.0", message = "height must be less than or equal to 300.0")
     private Double height;
-    @Size(max = 20, message = "blood pressure must be less than 20 characters")
+
+    @Pattern(regexp = "^\\d{2,3}/\\d{2,3}$", message = "Blood pressure format must be like 120/80")
+    @Size(max = 7, message = "Blood pressure max 7 characters")
     private String bloodPressure;
 
     @Future(message = "next visit date must be in the future")
