@@ -19,9 +19,9 @@ public class MedicalRecord extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotNull
     @OneToOne
     @JoinColumn(name = "appointment_id", nullable = false)
+    @NotNull
     private Appointment appointment;
 
     @Column(nullable = false)
@@ -46,6 +46,7 @@ public class MedicalRecord extends BaseEntity {
     @Size(max = 20)
     private String bloodPressure;
 
+    @Future
     private LocalDate nextVisitDate;
 
 }

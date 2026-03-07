@@ -24,13 +24,13 @@ public class Appointment extends BaseEntity {
     private UUID id;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name = "patient_id", nullable = false)
+    @NotNull
     private Patient patient;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name = "doctor_id", nullable = false)
+    @NotNull
     private Doctor doctor;
 
     @Column(nullable = false)
