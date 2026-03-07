@@ -43,7 +43,8 @@ public class MedicalRecord extends BaseEntity {
     @DecimalMax(value = "300.0")
     private Double height;
 
-    @Size(max = 20)
+    @Pattern(regexp = "^\\d{2,3}/\\d{2,3}$")
+    @Size(max = 7)
     private String bloodPressure;
 
     @Future
