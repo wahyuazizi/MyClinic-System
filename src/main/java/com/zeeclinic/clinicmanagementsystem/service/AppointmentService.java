@@ -5,10 +5,11 @@ import com.zeeclinic.clinicmanagementsystem.model.dto.response.AppointmentRespon
 import com.zeeclinic.clinicmanagementsystem.model.entity.Appointment;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface AppointmentService extends CrudService<AppointmentRequest, AppointmentResponse> {
-    Appointment findByPatientId(UUID id);
-    Appointment findByDoctorId(UUID id);
-    void setStatus(UUID id, Status status);
+    List<AppointmentResponse> findByPatientId(UUID id);
+    List<AppointmentResponse> findByDoctorId(UUID id);
+    AppointmentResponse setStatus(UUID id, Status status);
 }
