@@ -6,7 +6,6 @@ import com.zeeclinic.clinicmanagementsystem.model.dto.request.PatientRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.PatientResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Patient;
 import com.zeeclinic.clinicmanagementsystem.repository.PatientRepository;
-import com.zeeclinic.clinicmanagementsystem.service.CrudService;
 import com.zeeclinic.clinicmanagementsystem.service.PatientService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
