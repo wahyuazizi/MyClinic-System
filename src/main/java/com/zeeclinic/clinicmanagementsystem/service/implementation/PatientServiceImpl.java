@@ -1,42 +1,70 @@
 package com.zeeclinic.clinicmanagementsystem.service.implementation;
 
+import com.zeeclinic.clinicmanagementsystem.exception.DuplicateException;
+import com.zeeclinic.clinicmanagementsystem.mapper.PatientMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.PatientRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.PatientResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Patient;
+import com.zeeclinic.clinicmanagementsystem.repository.PatientRepository;
 import com.zeeclinic.clinicmanagementsystem.service.CrudService;
 import com.zeeclinic.clinicmanagementsystem.service.PatientService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public class PatientServiceImpl implements CrudService<PatientRequest, PatientResponse>, PatientService {
+@Service
+@RequiredArgsConstructor
+public class PatientServiceImpl implements PatientService {
+
+    private final PatientRepository patientRepository;
+    private final PatientMapper patientMapper;
+
     @Override
-    public PatientRequest create(PatientRequest obj) {
-        return null;
+    public PatientResponse create(PatientRequest requestPayload) {
+        Optional<Patient> checkPatient = patientRepository.findByNikAndDeletedAtIsNull(requestPayload.getNik());
+
+        if (checkPatient.isPresent()) throw new DuplicateException("Patient already exists");
+
+        Patient patient = patientMapper.toEntity(requestPayload);
+
+        return patientMapper.toResponse(patientRepository.save(patient));
     }
 
     @Override
     public List<PatientResponse> findAll() {
-        return List.of();
+        List<Patient> patients = patientRepository.findAllByDeletedAtIsNull();
+        return patients.stream().map(patientMapper::toResponse).toList();
     }
 
     @Override
     public PatientResponse findById(UUID id) {
-        return null;
+        Patient patient = patientRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        return patientMapper.toResponse(patient);
     }
 
     @Override
     public PatientResponse update(UUID id, PatientRequest request) {
-        return null;
+
+        Patient patient = patientRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        patientMapper.updateEntity(request, patient);
+        return patientMapper.toResponse(patientRepository.save(patient));
     }
 
     @Override
     public void delete(UUID id) {
-
+        Patient patient = patientRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        patient.setDeletedAt(LocalDateTime.now());
+        patientRepository.save(patient);
     }
 
     @Override
-    public Patient findByNik(String nik) {
-        return null;
+    public PatientResponse findByNik(String nik) {
+        Patient patient = patientRepository.findByNikAndDeletedAtIsNull(nik).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        return patientMapper.toResponse(patient);
     }
 }

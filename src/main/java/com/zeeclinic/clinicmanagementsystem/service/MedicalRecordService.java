@@ -1,10 +1,12 @@
 package com.zeeclinic.clinicmanagementsystem.service;
 
+import com.zeeclinic.clinicmanagementsystem.model.dto.request.MedicalRecordRequest;
+import com.zeeclinic.clinicmanagementsystem.model.dto.response.MedicalRecordResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.MedicalRecord;
 
 import java.util.UUID;
 
-public interface MedicalRecordService {
+public interface MedicalRecordService extends CrudService<MedicalRecordRequest, MedicalRecordResponse> {
 
     MedicalRecord findByPatientId(UUID id);
 

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -53,4 +54,6 @@ public class Patient extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private BloodType bloodType;
+
+    private LocalDateTime deletedAt;
 }

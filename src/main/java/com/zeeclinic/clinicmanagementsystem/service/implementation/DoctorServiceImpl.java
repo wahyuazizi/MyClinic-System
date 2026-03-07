@@ -3,15 +3,16 @@ package com.zeeclinic.clinicmanagementsystem.service.implementation;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.DoctorRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.DoctorResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Doctor;
-import com.zeeclinic.clinicmanagementsystem.service.CrudService;
 import com.zeeclinic.clinicmanagementsystem.service.DoctorService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-public class DoctorServiceImpl implements CrudService<DoctorRequest, DoctorResponse>, DoctorService {
+@Service
+public class DoctorServiceImpl implements DoctorService {
     @Override
-    public DoctorRequest create(DoctorRequest obj) {
+    public DoctorResponse create(DoctorRequest requestPayload) {
         return null;
     }
 

@@ -5,12 +5,13 @@ import com.zeeclinic.clinicmanagementsystem.model.dto.response.AppointmentRespon
 import com.zeeclinic.clinicmanagementsystem.model.entity.Appointment;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 import com.zeeclinic.clinicmanagementsystem.service.AppointmentService;
-import com.zeeclinic.clinicmanagementsystem.service.CrudService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-public class AppointmentServiceImpl implements CrudService<AppointmentRequest, AppointmentResponse>, AppointmentService {
+@Service
+public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment findByPatientId(UUID id) {
         return null;
@@ -27,7 +28,7 @@ public class AppointmentServiceImpl implements CrudService<AppointmentRequest, A
     }
 
     @Override
-    public AppointmentRequest create(AppointmentRequest obj) {
+    public AppointmentResponse create(AppointmentRequest requestPayload) {
         return null;
     }
 
