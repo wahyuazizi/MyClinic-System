@@ -1,6 +1,6 @@
-package com.zeeclinic.clinicmanagementsystem.model;
+package com.zeeclinic.clinicmanagementsystem.model.entity;
 
-import com.zeeclinic.clinicmanagementsystem.utils.enums.Specialization;
+import com.zeeclinic.clinicmanagementsystem.model.enums.Specialization;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

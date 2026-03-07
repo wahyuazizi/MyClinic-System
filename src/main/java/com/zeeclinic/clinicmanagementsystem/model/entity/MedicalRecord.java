@@ -1,4 +1,4 @@
-package com.zeeclinic.clinicmanagementsystem.model;
+package com.zeeclinic.clinicmanagementsystem.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

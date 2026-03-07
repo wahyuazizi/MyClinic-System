@@ -1,6 +1,6 @@
-package com.zeeclinic.clinicmanagementsystem.model;
+package com.zeeclinic.clinicmanagementsystem.model.entity;
 
-import com.zeeclinic.clinicmanagementsystem.utils.enums.Status;
+import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
-package com.zeeclinic.clinicmanagementsystem.model;
+package com.zeeclinic.clinicmanagementsystem.model.entity;
 
-import com.zeeclinic.clinicmanagementsystem.utils.enums.BloodType;
-import com.zeeclinic.clinicmanagementsystem.utils.enums.Gender;
+import com.zeeclinic.clinicmanagementsystem.model.enums.BloodType;
+import com.zeeclinic.clinicmanagementsystem.model.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
