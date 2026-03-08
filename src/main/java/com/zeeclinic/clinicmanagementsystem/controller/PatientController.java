@@ -22,18 +22,18 @@ public class PatientController {
 
     @PostMapping
     public ResponseEntity<PatientResponse> createPatient(@Valid @RequestBody PatientRequest requestPayload){
-        patientService.create(requestPayload);
-        return ResponseEntity.status(HttpStatus.CREATED).body(patientService.create(requestPayload));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<PatientResponse> getPatient(@PathVariable UUID id){
-        return ResponseEntity.ok(patientService.findById(id));
+        PatientResponse patientResponse = patientService.create(requestPayload);
+        return ResponseEntity.status(HttpStatus.CREATED).body(patientResponse);
     }
 
     @GetMapping
     public ResponseEntity<List<PatientResponse>> getAllPatients(){
         return ResponseEntity.ok(patientService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PatientResponse> getPatient(@PathVariable UUID id){
+        return ResponseEntity.ok(patientService.findById(id));
     }
 
     @GetMapping("/{nik}")
