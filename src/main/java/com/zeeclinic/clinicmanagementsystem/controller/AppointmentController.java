@@ -5,7 +5,6 @@ import com.zeeclinic.clinicmanagementsystem.model.dto.request.AppointmentRequest
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.AppointmentResponse;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 import com.zeeclinic.clinicmanagementsystem.service.AppointmentService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,14 +51,20 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentResponseList);
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<AppointmentResponse> updateStatus(@PathVariable UUID id, @RequestBody Status status){
+    @PutMapping("/{id}")
+    public ResponseEntity<AppointmentResponse>  updateAppointment(@PathVariable UUID id, @Valid @RequestBody AppointmentRequest requestPayload){
+        return ResponseEntity.ok(appointmentService.update(id, requestPayload));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<AppointmentResponse> updateStatus(@PathVariable UUID id, @RequestParam Status status){
         AppointmentResponse appointmentResponse = appointmentService.setStatus(id, status);
         return  ResponseEntity.ok(appointmentResponse);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAppointmentById(@PathVariable UUID id){
+        appointmentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
