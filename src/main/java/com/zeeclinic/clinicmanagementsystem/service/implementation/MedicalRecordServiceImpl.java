@@ -1,5 +1,6 @@
 package com.zeeclinic.clinicmanagementsystem.service.implementation;
 
+import com.zeeclinic.clinicmanagementsystem.exception.BusinessException;
 import com.zeeclinic.clinicmanagementsystem.exception.ConflictException;
 import com.zeeclinic.clinicmanagementsystem.mapper.MedicalRecordMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.MedicalRecordRequest;
@@ -33,7 +34,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
             throw new ConflictException("Medical Record already exists for this appointment");
         }
         if (!appointment.getStatus().equals(Status.IN_PROGRESS) && !appointment.getStatus().equals(Status.DONE)){
-            throw new ConflictException("Can't Create Medical Record for this appointment");
+            throw new BusinessException("Can't Create Medical Record for this appointment");
         }
         MedicalRecord medicalRecord = medicalRecordMapper.toEntity(requestPayload);
         appointment.setStatus(Status.DONE);

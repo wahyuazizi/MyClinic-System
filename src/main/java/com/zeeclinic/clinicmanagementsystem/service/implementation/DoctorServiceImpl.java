@@ -1,6 +1,6 @@
 package com.zeeclinic.clinicmanagementsystem.service.implementation;
 
-import com.zeeclinic.clinicmanagementsystem.exception.DuplicateException;
+import com.zeeclinic.clinicmanagementsystem.exception.ConflictException;
 import com.zeeclinic.clinicmanagementsystem.mapper.DoctorMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.DoctorRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.DoctorResponse;
@@ -25,7 +25,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorResponse create(DoctorRequest requestPayload) {
         if(doctorRepository.existsByLicenseNumber(requestPayload.getLicenseNumber())){
-            throw new DuplicateException("Doctor already exists");
+            throw new ConflictException("Doctor already exists");
         }
         Doctor doctor = doctorMapper.toEntity(requestPayload);
         return doctorMapper.toResponse(doctorRepository.save(doctor));
