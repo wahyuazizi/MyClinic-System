@@ -19,6 +19,7 @@ public class PatientRequest {
 
     @NotBlank(message = "nik is required")
     @Size(min = 16, max = 16, message = "nik must be 16 characters")
+    @Pattern(regexp = "^\\d{16}$", message = "nik must be 16 digits")
     private String nik;
 
     @NotNull(message = "birth date is required")
@@ -26,6 +27,7 @@ public class PatientRequest {
     private LocalDate birthDate;
 
     @NotBlank(message = "phone number is required")
+    @Pattern(regexp = "^(\\+62|0)\\d{7,13}$", message = "Invalid phone number format")
     private String phoneNumber;
 
     private Gender gender;

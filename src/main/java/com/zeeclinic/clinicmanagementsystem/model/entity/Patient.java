@@ -31,6 +31,7 @@ public class Patient extends BaseEntity {
     @Column(unique = true, nullable = false)
     @NotBlank
     @Size(min = 16, max = 16)
+    @Pattern(regexp = "^\\d{16}$")
     private String nik;
 
     @Column(nullable = false)
@@ -44,6 +45,7 @@ public class Patient extends BaseEntity {
     @Column(nullable = false)
     @NotBlank
     @Size(max = 15)
+    @Pattern(regexp = "^(\\+62|0)\\d{7,13}$")
     private String phoneNumber;
 
     @Email

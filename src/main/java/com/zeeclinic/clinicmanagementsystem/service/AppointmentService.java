@@ -2,7 +2,6 @@ package com.zeeclinic.clinicmanagementsystem.service;
 
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.AppointmentRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.AppointmentResponse;
-import com.zeeclinic.clinicmanagementsystem.model.entity.Appointment;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 
 import java.util.List;
