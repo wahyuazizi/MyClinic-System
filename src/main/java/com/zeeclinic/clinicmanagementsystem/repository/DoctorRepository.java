@@ -1,6 +1,5 @@
 package com.zeeclinic.clinicmanagementsystem.repository;
 
-import com.zeeclinic.clinicmanagementsystem.model.dto.response.DoctorResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Doctor;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Specialization;
 import org.springframework.data.jpa.repository.JpaRepository;

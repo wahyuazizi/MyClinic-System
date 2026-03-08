@@ -6,7 +6,6 @@ import com.zeeclinic.clinicmanagementsystem.model.dto.request.DoctorRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.DoctorResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Doctor;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Specialization;
-import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 import com.zeeclinic.clinicmanagementsystem.repository.DoctorRepository;
 import com.zeeclinic.clinicmanagementsystem.service.DoctorService;
 import jakarta.persistence.EntityNotFoundException;

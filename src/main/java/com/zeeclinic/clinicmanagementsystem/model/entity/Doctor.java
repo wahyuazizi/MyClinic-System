@@ -2,10 +2,7 @@ package com.zeeclinic.clinicmanagementsystem.model.entity;
 
 import com.zeeclinic.clinicmanagementsystem.model.enums.Specialization;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -41,6 +38,7 @@ public class Doctor extends BaseEntity {
     @Column(nullable = false)
     @NotBlank
     @Size(max = 15)
+    @Pattern(regexp = "^(\\+62|0)\\d{7,13}$")
     private String phoneNumber;
 
     @Column(unique = true)
@@ -48,7 +46,7 @@ public class Doctor extends BaseEntity {
     @Size(max = 100)
     private String email;
 
-    @Column(columnDefinition = "boolean default true", nullable = false)
+    @Column(nullable = false, columnDefinition = "boolean default true")
     @NotNull
-    private Boolean isActive;
+    private Boolean isActive = true;
 }

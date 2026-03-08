@@ -1,10 +1,13 @@
 package com.zeeclinic.clinicmanagementsystem.service.implementation;
 
+import com.zeeclinic.clinicmanagementsystem.exception.BusinessException;
 import com.zeeclinic.clinicmanagementsystem.exception.ConflictException;
 import com.zeeclinic.clinicmanagementsystem.mapper.PatientMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.PatientRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.PatientResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Patient;
+import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
+import com.zeeclinic.clinicmanagementsystem.repository.AppointmentRepository;
 import com.zeeclinic.clinicmanagementsystem.repository.PatientRepository;
 import com.zeeclinic.clinicmanagementsystem.service.PatientService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +25,7 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final AppointmentRepository appointmentRepository;
 
     @Override
     public PatientResponse create(PatientRequest requestPayload) {
@@ -57,6 +61,13 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void delete(UUID id) {
         Patient patient = patientRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        boolean hasActiveAppointment = appointmentRepository.findByPatientId(id)
+                .stream()
+                .anyMatch(a->a.getStatus() == Status.PENDING || a.getStatus() == Status.CONFIRMED);
+
+        if(hasActiveAppointment){
+            throw new BusinessException("Patient has an active appointment, cannot be deleted");
+        }
         patient.setDeletedAt(LocalDateTime.now());
         patientRepository.save(patient);
     }
