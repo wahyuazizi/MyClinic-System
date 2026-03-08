@@ -36,7 +36,7 @@ public class PatientController {
         return ResponseEntity.ok(patientService.findById(id));
     }
 
-    @GetMapping("/{nik}")
+    @GetMapping("/nik/{nik}")
     public ResponseEntity<PatientResponse> getPatientByNik(@PathVariable String nik){
         return ResponseEntity.ok(patientService.findByNik(nik));
     }
