@@ -1,11 +1,12 @@
 package com.zeeclinic.clinicmanagementsystem.service.implementation;
 
-import com.zeeclinic.clinicmanagementsystem.exception.DuplicateException;
+import com.zeeclinic.clinicmanagementsystem.exception.ConflictException;
 import com.zeeclinic.clinicmanagementsystem.mapper.DoctorMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.DoctorRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.DoctorResponse;
 import com.zeeclinic.clinicmanagementsystem.model.entity.Doctor;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Specialization;
+import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 import com.zeeclinic.clinicmanagementsystem.repository.DoctorRepository;
 import com.zeeclinic.clinicmanagementsystem.service.DoctorService;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,7 +26,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorResponse create(DoctorRequest requestPayload) {
         if(doctorRepository.existsByLicenseNumber(requestPayload.getLicenseNumber())){
-            throw new DuplicateException("Doctor already exists");
+            throw new ConflictException("Doctor already exists");
         }
         Doctor doctor = doctorMapper.toEntity(requestPayload);
         return doctorMapper.toResponse(doctorRepository.save(doctor));

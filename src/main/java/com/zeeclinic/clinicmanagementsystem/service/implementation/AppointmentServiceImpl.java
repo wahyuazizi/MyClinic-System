@@ -1,5 +1,6 @@
 package com.zeeclinic.clinicmanagementsystem.service.implementation;
 
+import com.zeeclinic.clinicmanagementsystem.exception.BusinessException;
 import com.zeeclinic.clinicmanagementsystem.exception.ConflictException;
 import com.zeeclinic.clinicmanagementsystem.mapper.AppointmentMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.AppointmentRequest;
@@ -42,18 +43,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         Status currentStatus = appointment.getStatus();
 
         if (currentStatus == Status.DONE) {
-            throw new ConflictException("Can't change status of done appointment");
+            throw new BusinessException("Can't change status of done appointment");
         }
 
         if (status == Status.CANCELLED){
             if (!currentStatus.equals(Status.PENDING) && !currentStatus.equals(Status.CONFIRMED)){
-                throw  new ConflictException("Appointment can only be cancelled from PENDING or CONFIRMED");
+                throw  new BusinessException("Appointment can only be cancelled from PENDING or CONFIRMED");
             }
             appointment.setStatus(status);
             return appointmentMapper.toResponse(appointmentRepository.save(appointment));
         }
         if (currentStatus.ordinal() +1 != status.ordinal()){
-            throw new ConflictException("Invalid status transition: " + currentStatus + " to " + status);
+            throw new BusinessException("Invalid status transition: " + currentStatus + " to " + status);
         }
 
         appointment.setStatus(status);
@@ -65,7 +66,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Appointment not found"));
 
         if (!appointment.getStatus().equals(Status.CANCELLED)) {
-            throw  new ConflictException("Appointment can only be deleted if cancelled");
+            throw  new BusinessException("Appointment can only be deleted if cancelled");
         }
         appointmentRepository.delete(appointment);
     }
@@ -74,7 +75,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentResponse create(AppointmentRequest requestPayload) {
         UUID doctorId = requestPayload.getDoctorId();
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()->new EntityNotFoundException("Doctor not found"));
-        if (!doctor.getIsActive()) throw  new ConflictException("Appointment can only be made to an active doctor");
+        if (!doctor.getIsActive()) throw  new BusinessException("Appointment can only be made to an active doctor");
         LocalDateTime requestDateTime = requestPayload.getAppointmentDateTime();
         boolean conflict = appointmentRepository.existsByDoctorIdAndAppointmentDateTime(doctorId, requestDateTime);
         if (conflict) {
@@ -99,7 +100,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentResponse update(UUID id, AppointmentRequest request) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Appointment not found"));
         if (appointment.getStatus().equals(Status.DONE)) {
-            throw new ConflictException("Can't update done appointment");
+            throw new BusinessException("Can't update done appointment");
         }
         UUID doctorId = appointment.getDoctor().getId();
         LocalDateTime requestDateTime = request.getAppointmentDateTime();
