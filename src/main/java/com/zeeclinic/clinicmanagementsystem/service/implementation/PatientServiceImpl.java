@@ -1,6 +1,6 @@
 package com.zeeclinic.clinicmanagementsystem.service.implementation;
 
-import com.zeeclinic.clinicmanagementsystem.exception.DuplicateException;
+import com.zeeclinic.clinicmanagementsystem.exception.ConflictException;
 import com.zeeclinic.clinicmanagementsystem.mapper.PatientMapper;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.PatientRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.PatientResponse;
@@ -27,7 +27,7 @@ public class PatientServiceImpl implements PatientService {
     public PatientResponse create(PatientRequest requestPayload) {
         Optional<Patient> checkPatient = patientRepository.findByNikAndDeletedAtIsNull(requestPayload.getNik());
 
-        if (checkPatient.isPresent()) throw new DuplicateException("Patient already exists");
+        if (checkPatient.isPresent()) throw new ConflictException("Patient already exists");
 
         Patient patient = patientMapper.toEntity(requestPayload);
 
