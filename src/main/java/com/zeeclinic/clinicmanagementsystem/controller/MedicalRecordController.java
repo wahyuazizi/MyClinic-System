@@ -4,6 +4,7 @@ import com.zeeclinic.clinicmanagementsystem.config.ApiConstant;
 import com.zeeclinic.clinicmanagementsystem.model.dto.request.MedicalRecordRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.MedicalRecordResponse;
 import com.zeeclinic.clinicmanagementsystem.service.MedicalRecordService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(ApiConstant.MEDICAL_RECORD)
 @RequiredArgsConstructor
+@Tag(name = "4. Medical Record")
 public class MedicalRecordController {
 
     private final MedicalRecordService medicalRecordService;

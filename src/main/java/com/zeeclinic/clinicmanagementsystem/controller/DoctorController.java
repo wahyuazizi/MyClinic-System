@@ -5,6 +5,7 @@ import com.zeeclinic.clinicmanagementsystem.model.dto.request.DoctorRequest;
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.DoctorResponse;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Specialization;
 import com.zeeclinic.clinicmanagementsystem.service.DoctorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(ApiConstant.DOCTOR)
 @RequiredArgsConstructor
+@Tag(name = "2. Doctor")
 public class DoctorController {
 
     private final DoctorService doctorService;

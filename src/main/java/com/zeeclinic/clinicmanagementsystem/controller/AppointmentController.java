@@ -5,6 +5,7 @@ import com.zeeclinic.clinicmanagementsystem.model.dto.request.AppointmentRequest
 import com.zeeclinic.clinicmanagementsystem.model.dto.response.AppointmentResponse;
 import com.zeeclinic.clinicmanagementsystem.model.enums.Status;
 import com.zeeclinic.clinicmanagementsystem.service.AppointmentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(ApiConstant.APPOINTMENT)
 @RequiredArgsConstructor
+@Tag(name = "3. Appointment")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
